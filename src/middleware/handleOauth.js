@@ -1,18 +1,18 @@
 const superagent = require('superagent')
 const User = require('../models/users')
 
-const TOKEN_SERVER_URL = 'https://github.com/login/oauth/access_token'
-const CLIENT_ID = '6f0b888a483e7267bddc'
-const CLIENT_SECRET = process.env.GITHUB_APP_CLIENT_SECRET
+const TOKEN_SERVER_URL = 'https://api.twitter.com/oauth/access_token'
+const CLIENT_ID = 'GZDPfRPHCdDjaSMJTNXU0xSJd'
+const CLIENT_SECRET = process.env.TWITTER_APP_CLIENT_SECRET
 const API_SERVER = 'http://localhost:3000/oauth'
-const REMOTE_API_ENDPOINT = 'https://api.github.com/user'
+const REMOTE_API_ENDPOINT = 'https://api.twitter.com/user'
 
 async function exchangeCodeForToken (code) {
   const response = await superagent
     .post(TOKEN_SERVER_URL)
     .send({
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      oauth_consumer_key: CLIENT_ID,
+      oauth_token: CLIENT_SECRET,
       code: code,
       redirect_uri: API_SERVER,
       state: 'this is unguessable! mwahahaha'
@@ -37,9 +37,9 @@ async function getUser (username) {
 
 async function handleOauth (req, res, next) {
   try {
-    const { code } = req.query
-    console.log('(1) CODE:', code)
-    const remoteToken = await exchangeCodeForToken(req.query.code)
+    const { oauth_token } = req.query
+    console.log('(1) CODE:', oauth_token)
+    const remoteToken = await exchangeCodeForToken(oauth_token)
     console.log('(2) ACCESS TOKEN:', remoteToken)
     const remoteUsername = await getRemoteUsername(remoteToken)
     console.log('(3) GITHUB USER:', remoteUsername)
