@@ -7,27 +7,27 @@
   <body>
     <main>
       <h1>Click below to login with GitHub</h1>
-      <a href="#" id="oauth">Log in</a>
+      <a href="/oauth" id="oauth">Log in</a>
     </main>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+    <!--script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script-->
     <script>
-      const URL = 'https://api.twitter.com/oauth/request_token'
+      const URL = 'https://gitlab.com/oauth/authorize'
       const options = {
-        oauth_consumer_key: 'GZDPfRPHCdDjaSMJTNXU0xSJd',
-        oauth_callback: 'http://localhost:3000/oauth',
+        client_id: 'b3539d4ce693d56948d5cbf5287e04c290f8fb89e168d0e3b45052dbae096fa3',
+        response_type: 'code',
+        redirect_uri: 'http://localhost:3000/oauth',
         scope: '',
         state: 'this is unguessable! mwahahaha'
       }
-      
 
-      // const queryString = Object.keys(options).map(key => {
-      //   return `${key}=${encodeURIComponent(options[key])}`
-      // }).join('&')
+      const queryString = Object.keys(options).map(key => {
+        return `${key}=${encodeURIComponent(options[key])}`
+      }).join('&')
 
-      // const authURL = `${URL}?${queryString}`
+      const authURL = `${URL}?${queryString}`
 
       const link = document.getElementById('oauth')
-      link.setAttribute('href', 'javascript:$.post(URL, options)')
+      link.setAttribute('href', authURL)
 
     </script>
     
